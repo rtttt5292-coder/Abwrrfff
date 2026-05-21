@@ -25,32 +25,32 @@ def register_handlers(app: Client):
     async def send_start_menu(message, user):
         text = f"""
 
-   ✨ Hello {user}! ✨
+   ✨ أهلاً {user}! ✨
 
-👋 I am Nomad 🤖 
+👋 أنا نومад 🤖 
 
-Highlights:
+المميزات:
 ─────────────────────────────
-- Smart Anti-Spam & Link Shield
-- Adaptive Lock System (URLs, Media, Language & more)
-- Modular & Scalable Protection
-- Sleek UI with Inline Controls
+- حماية ذكية من السبام وحجب الروابط
+- نظام قفل متكيف (روابط، وسائط، لغة والمزيد)
+- حماية معيارية وقابلة للتوسع
+- واجهة أنيقة مع أزرار تفاعلية
 
-» More New Features coming soon ...
+» المزيد من المميزات قادمة قريباً ...
 """
 
         buttons = InlineKeyboardMarkup([
-            [InlineKeyboardButton("⚒️ Add to Group ⚒️", url=f"https://t.me/{BOT_USERNAME}?startgroup=true")],
+            [InlineKeyboardButton("⚒️ أضفني للمجموعة ⚒️", url=f"https://t.me/{BOT_USERNAME}?startgroup=true")],
             [
-                InlineKeyboardButton("⌂ Support ⌂", url=SUPPORT_GROUP),
-                InlineKeyboardButton("⌂ Update ⌂", url=UPDATE_CHANNEL),
+                InlineKeyboardButton("⌂ الدعم ⌂", url=SUPPORT_GROUP),
+                InlineKeyboardButton("⌂ التحديثات ⌂", url=UPDATE_CHANNEL),
             ],
             [
-                InlineKeyboardButton("※ ŎŴɳēŔ ※", url=f"tg://user?id={OWNER_ID}"),
-                InlineKeyboardButton("Repo", url="https://github.com/LearningBotsOfficial/Nomade"),
+                InlineKeyboardButton("※ المالك ※", url=f"tg://user?id={OWNER_ID}"),
+                InlineKeyboardButton("المستودع", url="https://github.com/LearningBotsOfficial/Nomade"),
                 
             ],
-            [InlineKeyboardButton("📚 Help Commands 📚", callback_data="help")]
+            [InlineKeyboardButton("📚 قائمة الأوامر 📚", callback_data="help")]
         ])
 
         # If /start command, send a new photo
@@ -64,7 +64,7 @@ Highlights:
 # ==========================================================
 # Start Command
 # ==========================================================
-    @app.on_message(filters.private & filters.command("start"))
+    @app.on_message(filters.private & filters.regex(r"^ابدأ"))
     async def start_command(client, message):
         user = message.from_user
         await db.add_user(user.id, user.first_name)
@@ -76,21 +76,21 @@ Highlights:
     async def send_help_menu(message):
         text = """
 ╔══════════════════╗
-     Help Menu
+     قائمة المساعدة
 ╚══════════════════╝
 
-Choose a category below to explore commands:
+اختر قسماً للاطلاع على الأوامر:
 ─────────────────────────────
 """
         buttons = InlineKeyboardMarkup([
             [
-                InlineKeyboardButton("⌂ Greetings ⌂", callback_data="greetings"),
-                InlineKeyboardButton("⌂ Locks ⌂", callback_data="locks"),
+                InlineKeyboardButton("⌂ الترحيب ⌂", callback_data="greetings"),
+                InlineKeyboardButton("⌂ الأقفال ⌂", callback_data="locks"),
             ],
             [
-                InlineKeyboardButton("⌂ Moderation ⌂", callback_data="moderation")
+                InlineKeyboardButton("⌂ الإدارة ⌂", callback_data="moderation")
             ],
-            [InlineKeyboardButton("🔙 Back", callback_data="back_to_start")]
+            [InlineKeyboardButton("🔙 رجوع", callback_data="back_to_start")]
         ])
 
         media = InputMediaPhoto(media=START_IMAGE, caption=text)
@@ -120,26 +120,26 @@ Choose a category below to explore commands:
     async def greetings_callback(client, callback_query):
         text = """
 ╔══════════════════╗
-    ⚙ Welcome System
+    ⚙ نظام الترحيب
 ╚══════════════════╝
 
-Commands to Manage Welcome Messages:
+أوامر إدارة رسائل الترحيب:
 
-- /setwelcome <text> : Set a custom welcome message for your group
-- /welcome on        : Enable the welcome messages
-- /welcome off       : Disable the welcome messages
+- /تعيين_ترحيب <نص> : تعيين رسالة ترحيب مخصصة للمجموعة
+- /ترحيب on      : تفعيل رسائل الترحيب
+- /ترحيب off     : إيقاف رسائل الترحيب
 
-Supported Placeholders:
-- {username} : Telegram username
-- {first_name} : User's first name
-- {id} : User ID
-- {mention} : Mention user in message
+المتغيرات المتاحة:
+- {username} : اسم المستخدم على تيليغرام
+- {first_name} : الاسم الأول للمستخدم
+- {id} : معرف المستخدم
+- {mention} : الإشارة للمستخدم في الرسالة
 
-Example:
- /setwelcome Hello {first_name}! Welcome to {title}!
+مثال:
+ /setwelcome مرحباً {first_name}! أهلاً بك في {title}!
 """
         buttons = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔙 Back", callback_data="help")]
+            [InlineKeyboardButton("🔙 رجوع", callback_data="help")]
         ])
         media = InputMediaPhoto(media=START_IMAGE, caption=text)
         await callback_query.message.edit_media(media=media, reply_markup=buttons)
@@ -152,28 +152,28 @@ Example:
     async def locks_callback(client, callback_query):
         text = """
 ╔══════════════════╗
-     ⚙ Locks System
+     ⚙ نظام الأقفال
 ╚══════════════════╝
 
-Commands to Manage Locks:
+أوامر إدارة الأقفال:
 
-- /lock <type>    : Enable a lock for the group
-- /unlock <type>  : Disable a lock for the group
-- /locks          : Show currently active locks
+- /lock <نوع>    : تفعيل قفل في المجموعة
+- /unlock <نوع>  : إلغاء قفل في المجموعة
+- /الاقفال          : عرض الأقفال النشطة حالياً
 
-Available Lock Types:
-- url       : Block links
-- sticker   : Block stickers
-- media     : Block photos/videos/gifs
-- username  : Block messages with @username mentions
-- language  : Block non-English messages
+أنواع الأقفال المتاحة:
+- url       : حجب الروابط
+- sticker   : حجب الملصقات
+- media     : حجب الصور/الفيديوهات/الصور المتحركة
+- username  : حجب الرسائل التي تحتوي على إشارات @username
+- language  : حجب الرسائل غير العربية
 
-Example:
- /lock url       : Blocks any messages containing links
- /unlock sticker : Allows stickers again
+مثال:
+ /قفل url       : يحجب أي رسائل تحتوي على روابط
+ /فتح ملصق : يسمح بالملصقات مرة أخرى
 """
         buttons = InlineKeyboardMarkup([
-            [InlineKeyboardButton("🔙 Back", callback_data="help")]
+            [InlineKeyboardButton("🔙 رجوع", callback_data="help")]
         ])
         media = InputMediaPhoto(media=START_IMAGE, caption=text)
         await callback_query.message.edit_media(media=media, reply_markup=buttons)
@@ -187,29 +187,29 @@ Example:
         try:
             text = """
 ╔══════════════════╗
-      ⚙️ Moderation System
+      ⚙️ نظام الإدارة
 ╚══════════════════╝
 
-Manage your group easily with these tools:
+أدر مجموعتك بسهولة باستخدام هذه الأوامر:
 
-¤ /kick <user> — Remove a user  
-¤ /ban <user> — Ban permanently  
-¤ /unban <user> — Lift ban  
-¤ /mute <user> — Disable messages  
-¤ /unmute <user> — Allow messages again  
-¤ /warn <user> — Add warning (3 = mute)  
-¤ /warns <user> — View warnings  
-¤ /resetwarns <user> — Clear all warnings  
-¤ /promote <user> — make admin
-¤ /demote <user> — remove from admin  
+¤ /kick <مستخدم> — طرد مستخدم  
+¤ /ban <مستخدم> — حظر دائم  
+¤ /unban <مستخدم> — رفع الحظر  
+¤ /mute <مستخدم> — كتم الرسائل  
+¤ /unmute <مستخدم> — السماح بالرسائل مجدداً  
+¤ /warn <مستخدم> — إضافة تحذير (3 = كتم)  
+¤ /warns <مستخدم> — عرض التحذيرات  
+¤ /resetwarns <مستخدم> — مسح جميع التحذيرات  
+¤ /promote <مستخدم> — ترقية لمشرف
+¤ /demote <مستخدم> — إزالة من المشرفين  
 
-💡 Example:
-Reply to a user or type  
-<code>/ban @username</code>
+💡 مثال:
+رد على مستخدم أو اكتب  
+<code>/حظر @username</code>
 
 """
             buttons = InlineKeyboardMarkup([
-                [InlineKeyboardButton("🔙 Back", callback_data="help")]
+                [InlineKeyboardButton("🔙 رجوع", callback_data="help")]
             ])
     
             media = InputMediaPhoto(media=START_IMAGE, caption=text)
@@ -218,31 +218,31 @@ Reply to a user or type
     
         except Exception as e:
             print(f"Error in info_callback: {e}")
-            await callback_query.answer("❌ Something went wrong.", show_alert=True)
+            await callback_query.answer("❌ حدث خطأ ما.", show_alert=True)
     
 
 # ==========================================================
 # Broadcast Command
 # ==========================================================
-    @app.on_message(filters.private & filters.command("broadcast"))
+    @app.on_message(filters.private & filters.regex(r"^بث"))
     async def broadcast_message(client, message):
         if not message.reply_to_message:
-            await message.reply_text("⚠️ Please reply to a message to broadcast it.")
+            await message.reply_text("⚠️ يرجى الرد على رسالة لبثها.")
             return
 
         if message.from_user.id != OWNER_ID:
-            await message.reply_text("❌ Only the bot owner can use this command.")
+            await message.reply_text("❌ فقط مالك البوت يمكنه استخدام هذا الأمر.")
             return
 
         text_to_send = message.reply_to_message.text or message.reply_to_message.caption
         if not text_to_send:
-            await message.reply_text("⚠️ The replied message has no text to send.")
+            await message.reply_text("⚠️ الرسالة المردود عليها لا تحتوي على نص للإرسال.")
             return
 
         users = await db.get_all_users()
         sent, failed = 0, 0
 
-        await message.reply_text(f"Broadcasting to {len(users)} users..")
+        await message.reply_text(f"جارٍ البث لـ {len(users)} مستخدم...")
 
         for user_id in users:
             try:
@@ -251,15 +251,15 @@ Reply to a user or type
             except Exception:
                 failed += 1
 
-        await message.reply_text(f"✅ Broadcast finished!\n\n Sent: {sent}\nFailed: {failed}")
+        await message.reply_text(f"✅ اكتمل البث!\n\n تم الإرسال: {sent}\nفشل: {failed}")
 
 # ==========================================================
 # stats Command
 # ==========================================================
-    @app.on_message(filters.private & filters.command("stats"))
+    @app.on_message(filters.private & filters.regex(r"^احصائيات"))
     async def stats_command(client, message):
         if message.from_user.id != OWNER_ID:
-            return await message.reply_text("❌ Only the bot owner can use this command")
+            return await message.reply_text("❌ فقط مالك البوت يمكنه استخدام هذا الأمر")
 
         users = await db.get_all_users()
-        return await message.reply_text(f"💡 Total users: {len(users)}")
+        return await message.reply_text(f"💡 إجمالي المستخدمين: {len(users)}")
