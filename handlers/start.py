@@ -64,7 +64,7 @@ def register_handlers(app: Client):
 # ==========================================================
 # Start Command
 # ==========================================================
-    @app.on_message(filters.private & filters.regex(r"^ابدأ"))
+    @app.on_message(filters.private & (filters.command("start") | filters.regex(r"^ابدأ")))
     async def start_command(client, message):
         user = message.from_user
         await db.add_user(user.id, user.first_name)
